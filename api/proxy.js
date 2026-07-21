@@ -16,6 +16,18 @@ export default async function handler(req, res) {
 
   const apiUrl = 'https://api.cloudflareclient.com/v0a737/reg';
 
+  // 💡 ပြင်ဆင်ထားသောအပိုင်း - Version များကို Array ဖြင့် စာရင်းလုပ်ထားခြင်း
+  const warpVersions = [
+    'a-6.30-3307',
+    'a-6.29-3220',
+    'a-6.28-3168',
+    'a-6.31-3321',
+    'a-6.32-3335'
+  ];
+  
+  // 💡 စာရင်းထဲမှ Version တစ်ခုကို ကျပန်း (Random) ရွေးချယ်ခြင်း
+  const randomVersion = warpVersions[Math.floor(Math.random() * warpVersions.length)];
+
   try {
     // Cloudflare သို့ WARP Android App အယောင်ဆောင်၍ လှမ်းတောင်းခြင်း
     const response = await fetch(apiUrl, {
@@ -24,9 +36,9 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         'User-Agent': 'okhttp/3.12.1',
         'Accept': 'application/json',
-        'CF-Client-Version': 'a-6.30-3307'
+        'CF-Client-Version': randomVersion // 💡 အသေမထားတော့ဘဲ ရွေးချယ်ထားသော Version ကို အစားထိုးခြင်း
       },
-      body: JSON.stringify(req.body) // Webpage မှ ရလာသော Payload အတိုင်း ပြန်ပို့ခြင်း
+      body: JSON.stringify(req.body) 
     });
 
     const data = await response.json();
